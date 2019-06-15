@@ -1,0 +1,17 @@
+---
+# master control
+- hosts: all
+  roles:
+  - role: common
+
+- hosts: ntpmaster
+  roles:
+  - role: ntpmaster
+
+- hosts: ntpslave
+  roles:
+  - role: ntpslave
+
+- hosts: ntpslave
+  roles:
+  - role: kubeadmin

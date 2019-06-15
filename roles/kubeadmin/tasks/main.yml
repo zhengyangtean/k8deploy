@@ -1,0 +1,99 @@
+---
+# Task file for kubeadmin
+-   name: "kubeadmin :: setting up kubernetes repo"
+    template:
+        src: kubernetes.repo.je
+        dest: /etc/yum.repos.d/kubernetes.repo
+        owner: root
+        group: root
+
+-   name: "kubeadmin :: adding gpg key for yum"
+    rpm_key:
+        state: present
+        key: "{{ item }}"
+    with_items:
+        - "https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg"
+        - "https://packages.cloud.google.com/yum/doc/yum-key.gpg"
+# -   name: "cdh :: import repo signing GPG key"
+#     rpm_key:
+#         state: present
+#         key: "https://archive.cloudera.com/cm6/6.2.0/redhat7/yum/RPM-GPG-KEY-cloudera"
+
+# -   name: "cdh :: install oracle jdk & epel"
+#     yum:
+#         name: "{{ packages }}"
+#     vars:
+#         packages:
+#         - "oracle-j2sdk1.8"
+#         - "epel-release"
+#         - "postgresql-server"
+#         - "postgresql-contrib"
+#     register: postgresql     
+
+# -   name: "cdh :: setup local for database"
+#     lineinfile:
+#         path: /etc/locale.conf
+#         state: present
+#         line: "{{ item }}"
+#     with_items:
+#         - 'LC_ALL="en_US.UTF-8"'
+
+
+# -   name: "cdh :: postgres-init"
+#     command: "postgresql-setup initdb"
+#     when: postgresql.changed  
+
+# -   name: "cdh :: install pip"
+#     yum:
+#         name: "{{ packages }}"
+#     vars:
+#         packages:
+#         - "python-pip"
+
+# -   name: "cdh :: install psycopg2"
+#     pip:
+#         name: "psycopg2-binary"
+
+
+# -   name: "cdh :: start tuned(to disable it)"
+#     systemd:
+#         name: tuned
+#         state: "started"
+
+# -   name: "cdh :: turn off tuned"
+#     command: "tuned-adm off"
+ 
+# -   name: "cdh :: start tuned(to disable it)"
+#     systemd:
+#         name: tuned
+#         state: "stopped"
+#         enabled: no
+
+# -   name: "cdh :: disable thp"
+#     lineinfile:
+#         path: "/etc/rc.d/rc.local"
+#         state: present
+#         mode: "u+x"
+#         line: "{{ item }}"
+#     with_items:
+#         - "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
+#         - "echo never > /sys/kernel/mm/transparent_hugepage/defrag"
+
+# -   name: "cdh :: disable thp"
+#     lineinfile:
+#         path: "/etc/default/grub"
+#         state: present
+#         line: "{{ item }}"
+#     with_items:
+#         - "transparent_hugepage=never"
+#     register: thp
+
+# -   name: "cdh :: uupdate grub"
+#     command : "grub2-mkconfig -o /boot/grub2/grub.cfg"
+#     when: thp.changed
+
+# -   name: "cdh :: setting swappiness"
+#     sysctl:
+#         name: vm.swappiness
+#         value: 1
+#         state: present
