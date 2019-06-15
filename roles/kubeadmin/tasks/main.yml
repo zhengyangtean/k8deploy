@@ -2,7 +2,7 @@
 # Task file for kubeadmin
 -   name: "kubeadmin :: setting up kubernetes repo"
     template:
-        src: kubernetes.repo.je
+        src: kubernetes.repo.j2
         dest: /etc/yum.repos.d/kubernetes.repo
         owner: root
         group: root
@@ -14,21 +14,22 @@
     with_items:
         - "https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg"
         - "https://packages.cloud.google.com/yum/doc/yum-key.gpg"
-# -   name: "cdh :: import repo signing GPG key"
-#     rpm_key:
-#         state: present
-#         key: "https://archive.cloudera.com/cm6/6.2.0/redhat7/yum/RPM-GPG-KEY-cloudera"
 
-# -   name: "cdh :: install oracle jdk & epel"
-#     yum:
-#         name: "{{ packages }}"
-#     vars:
-#         packages:
-#         - "oracle-j2sdk1.8"
-#         - "epel-release"
-#         - "postgresql-server"
-#         - "postgresql-contrib"
-#     register: postgresql     
+-   name: "kubeadmin :: install kubernetes"
+    yum:
+        name: "{{ packages }}" 
+        disable_excludes: "kubernetes"
+    vars:
+        packages:
+        - "kubelet"
+        - "kubeadm"
+        - "kubectl"
+
+-   name: "kubeadmin :: start kubelet"
+    systemd:
+        name: kubelet
+        state: "started"
+        enabled: yes
 
 # -   name: "cdh :: setup local for database"
 #     lineinfile:
@@ -55,10 +56,6 @@
 #         name: "psycopg2-binary"
 
 
-# -   name: "cdh :: start tuned(to disable it)"
-#     systemd:
-#         name: tuned
-#         state: "started"
 
 # -   name: "cdh :: turn off tuned"
 #     command: "tuned-adm off"
