@@ -4,14 +4,10 @@
   roles:
   - role: common
 
-- hosts: ntpmaster
-  roles:
-  - role: ntpmaster
+# - hosts: master
+#   roles:
+#   - role: master
 
-- hosts: ntpslave
-  roles:
-  - role: ntpslave
-
-- hosts: ntpslave
-  roles:
-  - role: kubeadmin
+# - hosts: slave
+#   roles:
+#   - role: slave

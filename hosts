@@ -1,8 +1,7 @@
-[ntpmaster]
-core ansible_host=192.168.2.11 ansible_user=root
+[master]
+k8-n1 ansible_host=10.0.2.101 ansible_user=root
 
-[ntpslave]
-k8-01 ansible_host=192.168.2.101 ansible_user=root
-k8-02 ansible_host=192.168.2.102 ansible_user=root
-k8-03 ansible_host=192.168.2.103 ansible_user=root
+[slave]
+k8-n2 ansible_host=10.0.2.102 ansible_user=root
+k8-n3 ansible_host=10.0.2.103 ansible_user=root
 
