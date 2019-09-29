@@ -10,12 +10,9 @@
       - "kubeadm"
 
 
-- name: Create a 2048-bit SSH key for user kubeacc in 
+- name: Create a 2048-bit SSH key for user {{ kubeacc }} 
   user:
-    name: kubeacc
-    generate_ssh_key: yes
-    ssh_key_bits: 2048
-    ssh_key_file: .ssh/id_rsa
+    name: "{{ kubeacc }}"
 
 - name: "initialize the cluster"
   shell: kubeadm init --pod-network-cidr=192.168.0.0/16 >> cluster_initialized.txt
@@ -25,7 +22,7 @@
 
 - name: create .kube directory
   become: yes
-  become_user: kubeacc
+  become_user: "{{ kubeacc }}"
   file:
     path: $HOME/.kube
     state: directory
@@ -34,13 +31,13 @@
 - name: copy admin.conf to user's kube config
   copy:
     src: /etc/kubernetes/admin.conf
-    dest: /home/kubeacc/.kube/config
+    dest: /home/{{ kubeacc }}/.kube/config
     remote_src: yes
-    owner: kubeacc
+    owner: "{{ kubeacc }}"
 
 - name: install Pod network
   become: yes
-  become_user: kubeacc
+  become_user: "{{ kubeacc }}"
   shell: kubectl apply -f https://docs.projectcalico.org/v3.9/manifests/calico.yaml >> pod_network_setup.txt
   args:
     chdir: $HOME
