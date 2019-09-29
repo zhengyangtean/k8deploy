@@ -43,15 +43,6 @@
     chdir: $HOME
     creates: pod_network_setup.txt
 
-
-- name: install admin dashboard
-  become: yes
-  become_user: "{{ kubeacc }}"
-  shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml >> pod_network_setup.txt
-  args:
-    chdir: $HOME
-    creates: admin_dashboard.txt    
-
 - name: Generate join command
   command: kubeadm token create --print-join-command
   register: join_command
