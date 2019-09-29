@@ -12,6 +12,6 @@
   roles:
   - role: kubemaster
 
-# - hosts: slave
-#   roles:
-#   - role: slave
+- hosts: slave
+  roles:
+  - role: kubeslave
