@@ -4,9 +4,13 @@
   roles:
   - role: common
 
-# - hosts: master
-#   roles:
-#   - role: master
+- hosts: all
+  roles:
+  - role: kubecommon
+
+- hosts: master
+  roles:
+  - role: kubemaster
 
 # - hosts: slave
 #   roles:

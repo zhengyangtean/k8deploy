@@ -1,0 +1,17 @@
+---
+# Task file for kubernetes master
+
+- name: "install kubernetes"
+  yum:
+      name: "{{ packages }}" 
+  vars:
+      packages:
+      - "kubectl"
+      - "kubeadm"
+
+- name: "start kubelet"
+  service:
+    name: kubelet
+    state: started
+    enabled: yes
+
