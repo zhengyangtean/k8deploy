@@ -9,11 +9,6 @@
       - "kubectl"
       - "kubeadm"
 
-- name: "start kubelet"
-  service:
-    name: kubelet
-    state: started
-    enabled: yes
 
 - name: Create a 2048-bit SSH key for user kubeacc in 
   user:
@@ -23,18 +18,18 @@
     ssh_key_file: .ssh/id_rsa
 
 - name: "initialize the cluster"
-  shell: kubeadm init --pod-network-cidr={{pod-network-cidr}} >> cluster_initialized.txt
+  shell: kubeadm init --pod-network-cidr=192.168.0.0/16 >> cluster_initialized.txt
   args:
     chdir: $HOME
     creates: cluster_initialized.txt
 
 - name: create .kube directory
-    become: yes
-    become_user: kubeacc
-    file:
-      path: $HOME/.kube
-      state: directory
-      mode: 0755
+  become: yes
+  become_user: kubeacc
+  file:
+    path: $HOME/.kube
+    state: directory
+    mode: 0755
 
 - name: copy admin.conf to user's kube config
   copy:
@@ -43,10 +38,10 @@
     remote_src: yes
     owner: kubeacc
 
-- name: install Pod network
-  become: yes
-  become_user: kubeacc
-  shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be0084506e4ec919aa1c114638878db11b/Documentation/kube-flannel.yml >> pod_network_setup.txt
-  args:
-    chdir: $HOME
-      creates: pod_network_setup.txt
+# - name: install Pod network
+#   become: yes
+#   become_user: kubeacc
+#   shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be0084506e4ec919aa1c114638878db11b/Documentation/kube-flannel.yml >> pod_network_setup.txt
+#   args:
+#     chdir: $HOME
+#       creates: pod_network_setup.txt
