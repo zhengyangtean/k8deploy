@@ -47,7 +47,7 @@
 - name: "installing yum package"
   yum:
     name: "{{ packages }}"
-    state: "installed"
+    state: "present"
   vars:
     packages:
     - "kubelet-1.15.3-0"
