@@ -49,7 +49,7 @@
     name: "{{ packages }}"
   vars:
     packages:
-    - kubelet
+    - "kubelet-1.15.3-0"
 
 - name: "start kubelet"
   service:
