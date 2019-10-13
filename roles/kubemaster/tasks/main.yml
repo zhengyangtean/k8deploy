@@ -4,6 +4,7 @@
 - name: "install kubernetes"
   yum:
       name: "{{ packages }}" 
+      state: "installed"
   vars:
       packages:
       - "kubectl-1.15.3-0"
