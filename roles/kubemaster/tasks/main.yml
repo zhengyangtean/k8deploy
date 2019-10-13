@@ -5,6 +5,7 @@
   yum:
       name: "{{ packages }}" 
       state: "present"
+      allow_downgrade: yes
   vars:
       packages:
       - "kubectl-1.15.3-0"
